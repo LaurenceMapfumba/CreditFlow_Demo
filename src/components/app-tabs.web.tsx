@@ -1,3 +1,4 @@
+import { Ionicons } from '@expo/vector-icons';
 import {
   Tabs,
   TabList,
@@ -6,40 +7,78 @@ import {
   TabTriggerSlotProps,
   TabListProps,
 } from 'expo-router/ui';
-import { SymbolView } from 'expo-symbols';
-import { Pressable, useColorScheme, View, StyleSheet } from 'react-native';
+import { Pressable, View, StyleSheet } from 'react-native';
 
-import { ExternalLink } from './external-link';
 import { ThemedText } from './themed-text';
 import { ThemedView } from './themed-view';
 
-import { Colors, MaxContentWidth, Spacing } from '@/constants/theme';
+import { MaxContentWidth, Spacing } from '@/constants/theme';
+import { useAuth } from '@/contexts/auth-context';
+import { useTheme } from '@/hooks/use-theme';
+
+const BLUE = '#2563EB';
+type IoniconsName = React.ComponentProps<typeof Ionicons>['name'];
+
+const TAB_ICONS: Record<string, { active: IoniconsName; inactive: IoniconsName }> = {
+  Home:     { active: 'home',             inactive: 'home-outline'             },
+  Market:   { active: 'storefront',       inactive: 'storefront-outline'       },
+  'My Loans': { active: 'document-text', inactive: 'document-text-outline'    },
+  Wallet:   { active: 'wallet',           inactive: 'wallet-outline'           },
+  Admin:    { active: 'shield-checkmark', inactive: 'shield-checkmark-outline' },
+};
 
 export default function AppTabs() {
+  const { user } = useAuth();
+  const isAdmin = user?.role === 'ADMIN';
+
   return (
     <Tabs>
       <TabSlot style={{ height: '100%' }} />
       <TabList asChild>
-        <CustomTabList>
+        <CreditFlowTabList>
           <TabTrigger name="home" href="/" asChild>
             <TabButton>Home</TabButton>
           </TabTrigger>
           <TabTrigger name="explore" href="/explore" asChild>
-            <TabButton>Explore</TabButton>
+            <TabButton>Market</TabButton>
           </TabTrigger>
-        </CustomTabList>
+          {!isAdmin && (
+            <TabTrigger name="loans" href="/loans" asChild>
+              <TabButton>My Loans</TabButton>
+            </TabTrigger>
+          )}
+          <TabTrigger name="wallet" href="/wallet" asChild>
+            <TabButton>Wallet</TabButton>
+          </TabTrigger>
+          {isAdmin && (
+            <TabTrigger name="admin" href="/admin" asChild>
+              <TabButton>Admin</TabButton>
+            </TabTrigger>
+          )}
+        </CreditFlowTabList>
       </TabList>
     </Tabs>
   );
 }
 
 export function TabButton({ children, isFocused, ...props }: TabTriggerSlotProps) {
+  const theme = useTheme();
+  const label = typeof children === 'string' ? children : '';
+  const iconSet = TAB_ICONS[label];
+  const iconName = iconSet
+    ? (isFocused ? iconSet.active : iconSet.inactive)
+    : 'ellipse-outline';
+  const color = isFocused ? BLUE : theme.textSecondary;
+
   return (
-    <Pressable {...props} style={({ pressed }) => pressed && styles.pressed}>
+    <Pressable {...props} style={({ pressed }) => [pressed && styles.pressed]}>
       <ThemedView
         type={isFocused ? 'backgroundSelected' : 'backgroundElement'}
-        style={styles.tabButtonView}>
-        <ThemedText type="small" themeColor={isFocused ? 'text' : 'textSecondary'}>
+        style={styles.tabBtn}>
+        <Ionicons name={iconName} size={18} color={color} />
+        <ThemedText
+          type="small"
+          style={[{ color }, isFocused && styles.tabBtnActiveText]}>
           {children}
         </ThemedText>
       </ThemedView>
@@ -47,29 +86,14 @@ export function TabButton({ children, isFocused, ...props }: TabTriggerSlotProps
   );
 }
 
-export function CustomTabList(props: TabListProps) {
-  const scheme = useColorScheme();
-  const colors = Colors[scheme === 'unspecified' ? 'light' : scheme];
-
+export function CreditFlowTabList(props: TabListProps) {
   return (
     <View {...props} style={styles.tabListContainer}>
       <ThemedView type="backgroundElement" style={styles.innerContainer}>
-        <ThemedText type="smallBold" style={styles.brandText}>
-          Expo Starter
+        <ThemedText type="smallBold" style={styles.brand}>
+          CreditFlow
         </ThemedText>
-
         {props.children}
-
-        <ExternalLink href="https://docs.expo.dev" asChild>
-          <Pressable style={styles.externalPressable}>
-            <ThemedText type="link">Docs</ThemedText>
-            <SymbolView
-              tintColor={colors.text}
-              name={{ ios: 'arrow.up.right.square', web: 'link' }}
-              size={12}
-            />
-          </Pressable>
-        </ExternalLink>
       </ThemedView>
     </View>
   );
@@ -94,22 +118,20 @@ const styles = StyleSheet.create({
     gap: Spacing.two,
     maxWidth: MaxContentWidth,
   },
-  brandText: {
+  brand: {
     marginRight: 'auto',
+    color: '#2563EB',
   },
-  pressed: {
-    opacity: 0.7,
-  },
-  tabButtonView: {
+  pressed: { opacity: 0.7 },
+  tabBtn: {
     paddingVertical: Spacing.one,
     paddingHorizontal: Spacing.three,
     borderRadius: Spacing.three,
-  },
-  externalPressable: {
     flexDirection: 'row',
-    justifyContent: 'center',
     alignItems: 'center',
     gap: Spacing.one,
-    marginLeft: Spacing.three,
+  },
+  tabBtnActiveText: {
+    fontWeight: '700',
   },
 });
