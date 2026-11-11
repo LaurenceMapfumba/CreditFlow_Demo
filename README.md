@@ -1,47 +1,71 @@
-# Welcome to your Expo app 👋
+CreditFlow
+ Peer-to-Peer Money Lending Platform
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+CreditFlow is a peer-to-peer (P2P) money lending platform designed to connect individuals looking to borrow money with individuals willing to lend and earn interest.
 
-## Get started
+The platform aims to simplify the lending process by providing a transparent and secure environment for loan requests, lending, repayments, and credit assessment, initially targeting the Zimbabwean market.
 
-1. Install dependencies
+Features
 
-   ```bash
-   npm install
-   ```
+- User Authentication: Secure registration and login.
+- Loan Requests: Borrowers can submit loan applications with preferred amounts, interest rates, and repayment periods.
+- Peer-to-Peer Lending: Lenders can browse available loan requests and choose borrowers to fund.
+- Credit Scoring: Assess borrower reliability using repayment history and financial transaction data.
+- KYC Verification: Identity verification to promote trust and accountability.
+- Loan Management: Track active loans, repayments, outstanding balances, and completed loans.
+- Transaction History: Maintain records of lending, borrowing, and repayment activities.
+- Payment Integration: Support for local payment channels such as EcoCash and bank transfers.
 
-2. Start the app
+Technology Stack
 
-   ```bash
-   npx expo start
-   ```
+- Frontend: React Native
+- Backend: Java Spring-boot
+- Database: Postgres
 
-## Get a fresh project
+Project Objectives
 
-When you're ready, run:
+- Improve access to alternative financing.
+- Connect borrowers directly with potential lenders.
+- Encourage responsible borrowing through credit scoring.
+- Provide lenders with opportunities to earn interest.
+- Promote transparency and accountability in peer-to-peer lending.
+
+Future Improvements
+
+- Automated credit scoring.
+- Advanced fraud detection.
+- Automated loan matching.
+- Real-time payment notifications.
+- Mobile application integration.
+- Financial analytics and reporting.
+
+Installation
+
+Clone the repository:
 
 ```bash
-npm run reset-project
+git clone https://github.com/LaurenceMapfumba/CreditFlow_Backend.git
+
+
+git clone https://github.com/LaurenceMapfumba/CreditFlow_Demo.git
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+Navigate into the project directory:
 
-### Other setup steps
+```bash
+cd CreditFlow_Backend
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+cd CreditFlow_Demo
+```
 
-## Learn more
+Install dependencies according to your frontend and backend setup.
 
-To learn more about developing your project with Expo, look at the following resources:
+Configure the required environment variables and database connection before starting the application.
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+## Disclaimer
 
-## Join the community
+CreditFlow is a software project exploring peer-to-peer lending solutions. Actual lending, payment processing, and financial operations are subject to applicable regulatory requirements.
 
-Join our community of developers creating universal apps.
+## License
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+This project is currently under development.
